@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../Styles/Form.css';
 
-const Login = () => {
+const Login = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -21,16 +21,23 @@ const Login = () => {
             method: 'POST',
             headers: myHeaders,
             body: raw,
-            redirect: 'follow'
+            redirect: 'follow',
+            credentials: 'include',
+            mode: 'cors'
         };
 
         fetch("http://localhost:8000/auth", requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
+        .then(response => {
+            return response.text();
+        })
+        .then(result => {
+            props.setLogged(1);
+        })
         .catch(error => console.log('error', error));
 
         setUsername('');
         setPassword('');
+
     }
 
     return (
