@@ -13,7 +13,9 @@ router.post('/', async (req, res) => {
     const foundUser = await User.findOne({username: username});
     if (foundUser) {
         if (bcrypt.compare(password, foundUser.password)) {
-            return res.status(200).send('Welcome ' + foundUser.username);
+            const userSession = { id: foundUser._id, name: foundUser.username, email: foundUser.email };
+            req.session.user = userSession;
+            return res.status(200).send('Logged in');
         }
         return res.status(400).send('Wrong password');
     }
@@ -40,6 +42,20 @@ router.post('/register', async (req, res) => {
         }
     }
 
+    return res.status(400).send();
+})
+
+// Logout
+router.post('/logout', (req, res, next) => {
+    req.session.destroy();
+    res.status(200).send();
+});
+
+// Check login status
+router.post('/isLogged', (req, res, next) => {
+    if (req.session.user)
+        return res.status(200).send();
+    
     return res.status(400).send();
 })
 
