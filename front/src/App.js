@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Login from './Components/Login';
 import Register from './Components/Register';
@@ -8,7 +7,7 @@ import { useEffect, useState } from 'react';
 function App() {
   const [isLogged, setLogged] = useState();
 
-
+  // Check for auth state each time the app renders
   useEffect(() => {
     const fetchData = async () => {
       var myHeaders = new Headers();
@@ -49,8 +48,7 @@ function App() {
     }
   };
 
-
-  console.log('isLogged value: ' + isLogged);
+  // Conditional rendering based on auth state
   if (!isLogged) {
     return (
       <div className="App">
