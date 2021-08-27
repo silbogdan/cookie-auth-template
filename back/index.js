@@ -39,7 +39,8 @@ app.use(sessions({
     secret: process.env.COOKIE_SECRET,
     saveUninitialized: false,
     cookie: { maxAge: Number(process.env.COOKIE_AGE) },
-    resave: false,
+    resave: true,
+    rolling: true,
     store: mongoDBStore
 }));
 
