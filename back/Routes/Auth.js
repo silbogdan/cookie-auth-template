@@ -9,10 +9,13 @@ const User = require('../Collections/UserSchema');
 router.post('/', async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
+    
+    if(username == undefined || password == undefined)
+        return res.status(400).json({ message: "Username or password is invalid." });
 
     const foundUser = await User.findOne({username: username});
     if (foundUser) {
-        if (bcrypt.compare(password, foundUser.password)) {
+        if (bcrypt.compareSync(password, foundUser.password)) {
             const userSession = { id: foundUser._id, name: foundUser.username, email: foundUser.email };
             req.session.user = userSession;
             return res.status(200).send('Logged in');
